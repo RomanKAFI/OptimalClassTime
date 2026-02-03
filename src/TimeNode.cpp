@@ -1,12 +1,35 @@
 #include "TimeNode.h"
 
+// Simple node to store one student name (no STL allowed)
+static const int MAX_NAME_LEN = 256;
+
+struct NameNode {
+    char name[MAX_NAME_LEN];
+    NameNode* next;
+
+    NameNode(const char* sourceName)
+        : next(nullptr)
+    {
+        int index = 0;
+        while (sourceName != nullptr &&
+               sourceName[index] != '\0' &&
+               index < MAX_NAME_LEN - 1)
+        {
+            name[index] = sourceName[index];
+            index++;
+        }
+        name[index] = '\0';
+    }
+};
+
 TimeNode::TimeNode(double startTimeValue)
     : startTime(startTimeValue),
-      matchCount(0),
-      studentNames(nullptr),
+      matchcount(0),
+      studentName(nullptr),
       next(nullptr)
 {
-} // constructor body must exist
+    // constructor body required
+}
 
 TimeNode::~TimeNode()
 {
@@ -16,17 +39,32 @@ TimeNode::~TimeNode()
     //
     // NOTE:
     // Do NOT delete 'next' here; Schedule deletes the TimeNode chain.
+
+    NameNode* currentNameNode = studentName;
+
+    while (currentNameNode != nullptr) {
+        NameNode* nodeToDelete = currentNameNode;
+        currentNameNode = currentNameNode -> next;
+        delete nodeToDelete;
+    }
+    studentName = nullptr; 
 }
 
-void TimeNode::addStudentName(const char* studentName)
+void TimeNode::addStudentName(const char* studentNameParam)
 {
     // TODO:
     // 1) Create a new NameNode that stores a copy of studentName
     // 2) Insert into the studentNames list
     // 3) Increment matchCount
-    //
-    // NOTE:
-    // Implement this after NameNode exists.
 
-    (void)studentName; // temporary: avoids unused parameter warning
+    if (studentNameParam == nullptr) {
+        return;
+    }
+
+    NameNode* newNameNode = new NameNode(studentNameParam);
+
+    newNameNode -> next = studentName;
+    studentName = newNameNode;
+
+    matchcount++;
 }
