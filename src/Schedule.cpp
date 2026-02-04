@@ -3,6 +3,8 @@
 #include <cctype>
 #include <cmath>
 
+using namespace std;
+
 Schedule::Schedule()
 {
     // TODO: init dayHeads[] to nullptr
@@ -46,7 +48,7 @@ void Schedule::addChoice(int dayIndex, double startTimeValue, const char* studen
         currentTimeNode = currentTimeNode->next;
     }
 
-    if (currentTimeNode != nullptr && std::fabs(currentTimeNode->startTime - startTimeValue) < EPS) {
+    if (currentTimeNode != nullptr && fabs(currentTimeNode->startTime - startTimeValue) < EPS) {
         currentTimeNode->addStudentName(studentName);
         return;
     }
@@ -70,8 +72,9 @@ void Schedule::displayMatches(int minMatches) const
         TimeNode* currentTimeNode = dayHeads[daySlot];
         while (currentTimeNode != nullptr) {
             if (currentTimeNode->matchcount >= minMatches) {
-                std::cout << dayNames[daySlot] << " " << currentTimeNode->startTime
-                          << ": " << currentTimeNode->matchcount << " matches" << std::endl;
+                cout << dayNames[daySlot] << " " << currentTimeNode->startTime
+                          << ": " << currentTimeNode->matchcount << " matches" << endl;
+                currentTimeNode->printStudentNames();
             }
             currentTimeNode = currentTimeNode->next;
         }
@@ -83,9 +86,9 @@ int Schedule::dayToIndex(const char* dayToken)
     //TODO: map 'sun'..'sat' to 0..6
     if (dayToken == nullptr) return -1;
 
-    char c0 = static_cast<char>(std::tolower(static_cast<unsigned char>(dayToken[0])));
-    char c1 = static_cast<char>(std::tolower(static_cast<unsigned char>(dayToken[1])));
-    char c2 = static_cast<char>(std::tolower(static_cast<unsigned char>(dayToken[2])));
+    char c0 = static_cast<char>(tolower(static_cast<unsigned char>(dayToken[0])));
+    char c1 = static_cast<char>(tolower(static_cast<unsigned char>(dayToken[1])));
+    char c2 = static_cast<char>(tolower(static_cast<unsigned char>(dayToken[2])));
 
     // compare first 3 chars (sun, mon, tue, etc.)
     if (c0 == 's' && c1 == 'u' && c2 == 'n') return 0;
@@ -108,8 +111,8 @@ bool Schedule::isValidStartTime(double startTimeValue)
     double fractionalPart = startTimeValue - static_cast<int>(startTimeValue);
 
     // accept fractional part close to 0.0 or 0.5
-    if (std::fabs(fractionalPart - 0.0) < EPS) return true;
-    if (std::fabs(fractionalPart - 0.5) < EPS) return true;
+    if (fabs(fractionalPart - 0.0) < EPS) return true;
+    if (fabs(fractionalPart - 0.5) < EPS) return true;
 
     return false;
 }

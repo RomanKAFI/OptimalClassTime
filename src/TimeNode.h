@@ -19,6 +19,9 @@ class TimeNode {
         ~TimeNode();
 
         void addStudentName(const char* studentName); // TODO: will use NameNode
+
+        // print each student name in this time's list (for displayMatches)
+        void printStudentNames() const;
 };
 
 #endif

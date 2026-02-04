@@ -1,4 +1,7 @@
 #include "TimeNode.h"
+#include <iostream>
+
+using namespace std;
 
 // Simple node to store one student name (no STL allowed)
 static const int MAX_NAME_LEN = 256;
@@ -67,4 +70,13 @@ void TimeNode::addStudentName(const char* studentNameParam)
     studentName = newNameNode;
 
     matchcount++;
+}
+
+void TimeNode::printStudentNames() const
+{
+    NameNode* currentNameNode = studentName;
+    while (currentNameNode != nullptr) {
+        cout << "  " << currentNameNode->name << endl;
+        currentNameNode = currentNameNode->next;
+    }
 }
